@@ -12,7 +12,6 @@ public class CubeInteractor : ICubeInteractor
         {
             heldCube = cube;
             cube.Pickup(null); // Здесь null, так как мы не привязываем куб к трансформу
-            cube.Transform.position += Vector3.up * 1.5f;
         }
     }
 

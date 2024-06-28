@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     public float moveSpeed = 5f;
     public float interactionDistance = 2f;
+    public float cubeFollowSpeed = 20f;  // Добавляем переменную для скорости следования куба
 
     private void Start()
     {
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
         {
             ICube heldCube = cubeInteractor.GetHeldCube();
             Vector3 targetPosition = transform.position + transform.forward * 1.5f + Vector3.up;
-            heldCube.Transform.position = Vector3.Lerp(heldCube.Transform.position, targetPosition, Time.deltaTime * 10f);
+            heldCube.Transform.position = Vector3.Lerp(heldCube.Transform.position, targetPosition, Time.deltaTime * cubeFollowSpeed);
         }
     }
 
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour
         {
             if (cubeInteractor.IsHoldingCube())
             {
-                TryPlaceCube();
+                DropCubeToGround();
             }
             else
             {
@@ -62,26 +63,17 @@ public class PlayerController : MonoBehaviour
         if (nearestCube != null)
         {
             cubeInteractor.PickupCube(nearestCube);
-            
             zoneManager.RemoveCubeFromThirdZone(nearestCube);
         }
     }
 
-    private void TryPlaceCube()
+    private void DropCubeToGround()
     {
-        Vector3 playerPosition = transform.position;
-        int row = Mathf.RoundToInt(playerPosition.x - zoneManager.GetSecondZonePosition(0, 0).x);
-        int column = Mathf.RoundToInt(playerPosition.z - zoneManager.GetSecondZonePosition(0, 0).z);
-
-        if (row >= 0 && row < 3 && column >= 0 && column < 3)
+        ICube heldCube = cubeInteractor.GetHeldCube();
+        if (heldCube != null)
         {
-            ICube heldCube = cubeInteractor.GetHeldCube();
-            if (zoneManager.PlaceCubeInSecondZone(heldCube, row, column))
-            {
-                Vector3 placePosition = zoneManager.GetSecondZonePosition(row, column);
-                heldCube.Transform.position = placePosition;
-                cubeInteractor.DropCube();
-            }
+            heldCube.Transform.position = new Vector3(heldCube.Transform.position.x, 0, heldCube.Transform.position.z);
+            cubeInteractor.DropCube();
         }
     }
 
