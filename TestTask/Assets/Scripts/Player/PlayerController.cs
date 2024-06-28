@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     public float moveSpeed = 5f;
     public float interactionDistance = 2f;
-    public float cubeFollowSpeed = 20f;  // Добавляем переменную для скорости следования куба
+    public float cubeFollowSpeed = 20f;
 
     private void Start()
     {

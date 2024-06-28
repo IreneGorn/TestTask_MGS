@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
         if (isCorrect)
         {
             Debug.Log("Поздравляем! Вы правильно расставили кубы!");
-            // Здесь можно добавить логику для завершения уровня или перехода к следующему
         }
         else
         {

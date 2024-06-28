@@ -11,7 +11,7 @@ public class CubeInteractor : ICubeInteractor
         if (!IsHoldingCube())
         {
             heldCube = cube;
-            cube.Pickup(null); // Здесь null, так как мы не привязываем куб к трансформу
+            cube.Pickup(null);
         }
     }
 

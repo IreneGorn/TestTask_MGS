@@ -26,8 +26,6 @@ public class CubeChecker : ICubeChecker
 
     private bool CompareCubes(ICube cube1, ICube cube2)
     {
-        // Здесь реализуйте логику сравнения кубов
-        // Например, по цвету, если у кубов есть свойство цвета
         return cube1 == cube2;
     }
 }
