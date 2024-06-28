@@ -18,7 +18,7 @@ public class Cube : MonoBehaviour, ICube
     {
         isPickedUp = true;
         rb.isKinematic = true;
-        col.enabled = false;
+        //col.enabled = false;
         // Можно добавить визуальный эффект при подборе куба
     }
 
@@ -26,7 +26,7 @@ public class Cube : MonoBehaviour, ICube
     {
         isPickedUp = false;
         rb.isKinematic = false;
-        col.enabled = true;
+        //col.enabled = true;
         // Можно добавить визуальный эффект при падении куба
     }
 }

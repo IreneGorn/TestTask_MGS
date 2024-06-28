@@ -10,24 +10,48 @@ public class CubeGenerator : ICubeGenerator
         this.cubePrefab = cubePrefab;
     }
 
-    public ICube[,] GenerateRandomCubeSet(Vector3 startPosition, int rows, int columns)
+    public ICube[,] GenerateRandomCubeSet(Vector3 startPosition, int rows, int columns, int numCubes)
     {
         ICube[,] cubeSet = new ICube[rows, columns];
+        List<Vector2Int> positions = GenerateRandomPositions(rows, columns, numCubes);
+
+        for (int i = 0; i < positions.Count; i++)
+        {
+            Vector2Int pos = positions[i];
+            Vector3 position = startPosition + new Vector3(pos.x, 0.5f, pos.y);
+            GameObject cubeObject = Object.Instantiate(cubePrefab, position, Quaternion.identity);
+            ICube cube = cubeObject.GetComponent<ICube>();
+            cubeSet[pos.x, pos.y] = cube;
+            
+            Rigidbody rb = cubeObject.GetComponent<Rigidbody>();
+            if (rb != null) rb.isKinematic = true;
+        }
+
+        return cubeSet;
+    }
+
+    private List<Vector2Int> GenerateRandomPositions(int rows, int columns, int numPositions)
+    {
+        List<Vector2Int> positions = new List<Vector2Int>();
+        List<Vector2Int> allPositions = new List<Vector2Int>();
+
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns; j++)
             {
-                Vector3 position = startPosition + new Vector3(i, 0.5f, j);
-                GameObject cubeObject = Object.Instantiate(cubePrefab, position, Quaternion.identity);
-                ICube cube = cubeObject.GetComponent<ICube>();
-                cubeSet[i, j] = cube;
-                
-                // Делаем куб не интерактивным
-                Rigidbody rb = cubeObject.GetComponent<Rigidbody>();
-                if (rb != null) rb.isKinematic = true;
+                allPositions.Add(new Vector2Int(i, j));
             }
         }
-        return cubeSet;
+
+        int maxIndex = Mathf.Min(numPositions, allPositions.Count);
+        for (int i = 0; i < maxIndex; i++)
+        {
+            int randomIndex = Random.Range(0, allPositions.Count);
+            positions.Add(allPositions[randomIndex]);
+            allPositions.RemoveAt(randomIndex);
+        }
+
+        return positions;
     }
 
     public List<ICube> GenerateLooseCubes(Vector3 startPosition, int count)

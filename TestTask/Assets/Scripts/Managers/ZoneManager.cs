@@ -13,6 +13,9 @@ public class ZoneManager : MonoBehaviour
     private ICube[,] secondZoneCubes;
     private List<ICube> thirdZoneCubes;
 
+    private int minFirstZoneCubes = 4;  // Минимальное количество кубов в первой зоне
+    private int maxFirstZoneCubes = 8; // Максимальное количество кубов в первой зоне
+
     [Inject]
     public void Construct(ICubeGenerator cubeGenerator)
     {
@@ -21,7 +24,8 @@ public class ZoneManager : MonoBehaviour
 
     public void InitializeZones(int rows, int columns)
     {
-        firstZoneCubes = cubeGenerator.GenerateRandomCubeSet(firstZoneTransform.position, rows, columns);
+        int numCubes = Random.Range(minFirstZoneCubes, maxFirstZoneCubes + 1); // Генерируем случайное количество кубов
+        firstZoneCubes = cubeGenerator.GenerateRandomCubeSet(firstZoneTransform.position, rows, columns, numCubes);
         secondZoneCubes = new ICube[rows, columns];
         thirdZoneCubes = cubeGenerator.GenerateLooseCubes(thirdZoneTransform.position, rows * columns);
     }
